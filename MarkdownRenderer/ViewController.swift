@@ -30,6 +30,20 @@ class ViewController: UIViewController, UITextViewDelegate {
             newWindow.rootViewController = vc
             newWindow.isHidden = false
             self.additionalWindows.append(newWindow)
+            
+            self.textViewDidChange(self.textView)
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIScreen.didDisconnectNotification, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            
+            guard let oldScreen = notification.object as? UIScreen else { return }
+            
+            if let index = self.additionalWindows.firstIndex(where: { (window) -> Bool in
+                window.screen == oldScreen
+            }) {
+                self.additionalWindows.remove(at: index)
+            }
         }
     }
 
