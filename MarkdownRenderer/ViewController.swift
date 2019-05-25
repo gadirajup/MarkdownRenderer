@@ -48,8 +48,15 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        guard let preview = additionalWindows.first?.rootViewController as? PreviewViewController else { return }
-        preview.text = textView.text
+        if let preview = additionalWindows.first?.rootViewController as? PreviewViewController {
+            preview.text = textView.text
+        }
+        
+        if let navController = splitViewController?.viewControllers.last as? UINavigationController {
+            if let preview = navController.topViewController as? PreviewViewController {
+                preview.text = textView.text
+            }
+        }
     }
     
 }
